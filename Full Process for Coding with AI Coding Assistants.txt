@@ -19,8 +19,7 @@ These are the high-level principles that guide how to work with AI tools efficie
 
 * Write docs and comments as you go. Don’t delay documentation.
 
-* Implement environment variables yourself. Don’t trust the LLM with API keys.
-Don’t be this guy.
+
 
 ________________
 
