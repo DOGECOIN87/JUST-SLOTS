@@ -1,0 +1,77 @@
+body {
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    background-color: #f0f0f0;
+}
+
+h1 {
+    color: #333;
+}
+
+.slot-machine {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0;
+    padding: 20px;
+    background-color: #ddd;
+    border: 5px solid #aaa;
+    border-radius: 10px;
+    transition: box-shadow 0.3s ease-in-out; /* Add transition for smooth effect */
+}
+
+/* Style for win indication */
+.slot-machine.win {
+    box-shadow: 0 0 20px 10px gold; /* Glowing effect */
+    border-color: gold;
+}
+
+.reel {
+    width: 100px; /* Adjust size as needed */
+    height: 100px; /* Adjust size as needed */
+    border: 2px solid #bbb;
+    margin: 0 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Hide potential overflow if images are larger */
+    background-color: #fff;
+    position: relative;
+    overflow: hidden; /* Crucial: Hide images outside the reel */
+}
+
+.reel-images {
+    display: flex;
+    flex-direction: column;
+    /* Transition for smooth spinning effect */
+    transition: transform 1s cubic-bezier(0.33, 1, 0.68, 1); /* Adjust timing and easing */
+}
+
+.reel img {
+    width: 90px;  /* Match reel width minus padding/border */
+    height: 90px; /* Match reel height minus padding/border */
+    object-fit: contain;
+    margin-bottom: 10px; /* Space between images in the column */
+}
+
+#spinButton {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    cursor: pointer;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#spinButton:hover {
+    background-color: #45a049;
+}
+
+#spinButton:active {
+    background-color: #3e8e41;
+}
