@@ -1,3 +1,15 @@
+let score = 0;
+
+/**
+ * Updates the score display element.
+ */
+function updateScoreDisplay() {
+    const scoreDisplay = document.getElementById('scoreDisplay');
+    if (scoreDisplay) {
+        scoreDisplay.textContent = `Score: ${score}`;
+    }
+}
+
 // Array of available image assets
 const images = [
     "Amused.png",
@@ -73,7 +85,11 @@ function spinReel(reelContainer, finalIndex) {
         // - Go past the initial images (1 full loop)
         // - Spin through LOOPS_BEFORE_STOP full loops
         // - Land on the finalIndex within the next loop
-        const targetOffset = (LOOPS_BEFORE_STOP * REEL_ITEM_COUNT + finalIndex) * IMAGE_TOTAL_HEIGHT;
+        // - Center the selected image in the middle of the 3 visible images
+        const visibleRows = 3;
+        const middleRowOffset = Math.floor(visibleRows / 2);
+
+        const targetOffset = (LOOPS_BEFORE_STOP * REEL_ITEM_COUNT + finalIndex - middleRowOffset) * IMAGE_TOTAL_HEIGHT;
 
         // Ensure smooth transition is enabled
         reelContainer.style.transition = `transform ${SPIN_DURATION / 1000}s cubic-bezier(0.33, 1, 0.68, 1)`;
@@ -85,8 +101,8 @@ function spinReel(reelContainer, finalIndex) {
             // 1. Disable transition for instant snap
             reelContainer.style.transition = 'none';
 
-            // 2. Calculate the equivalent position within the *first* set of images
-            const resetOffset = finalIndex * IMAGE_TOTAL_HEIGHT;
+            // 2. Calculate the equivalent position within the *first* set of images, centered
+            const resetOffset = (finalIndex - middleRowOffset) * IMAGE_TOTAL_HEIGHT;
             reelContainer.style.transform = `translateY(-${resetOffset}px)`;
 
             // 3. Force reflow/repaint (read offsetHeight) - browser trick
@@ -138,9 +154,15 @@ function checkWin(img1, img2, img3) {
     // Remove previous win indication
     slotMachine.classList.remove('win');
 
+
     if (img1 === img2 && img2 === img3) {
         // Add win indication class
         slotMachine.classList.add('win');
+
+        // Increase score for jackpot
+        score += 100;
+        updateScoreDisplay();
+
         // Use setTimeout to allow the UI to update before the alert
         setTimeout(() => {
             alert(`🎉 JACKPOT! You won with ${img1.split('.')[0]}! 🎉`);
@@ -153,7 +175,7 @@ function checkWin(img1, img2, img3) {
 
 // --- Initialization ---
 function initializeSlotMachine() {
-    // Remove any win class on load
+// Remove any win class on load
     slotMachine.classList.remove('win');
 
     // Populate reels on load
@@ -166,9 +188,27 @@ function initializeSlotMachine() {
     reelImages2.style.transform = `translateY(0px)`;
     reelImages3.style.transform = `translateY(0px)`;
 
+    // Initialize score display
+    updateScoreDisplay();
+
     // Add event listener to the spin button
     spinButton.addEventListener('click', handleSpin);
 }
 
+/**
+ * Resets the score to zero and updates the display.
+ */
+function resetScore() {
+    score = 0;
+    updateScoreDisplay();
+}
+
 // Initialize when the DOM is ready
-document.addEventListener('DOMContentLoaded', initializeSlotMachine);
+document.addEventListener('DOMContentLoaded', () => {
+    initializeSlotMachine();
+
+    const resetButton = document.getElementById('resetScoreButton');
+    if (resetButton) {
+        resetButton.addEventListener('click', resetScore);
+    }
+});
